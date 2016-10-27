@@ -1,0 +1,80 @@
+===========================================================
+<CCR>,<332CA>
+===========================================================
+					>>ASC<<
+					
+					
+					-tema1-
+
+				  
+				  |CLUSTER_SIM|
+
+===========================================================
+
+1. Implementare
+2. Probleme aparute
+3. Testare
+
+===========================================================
+*1. Voi descrie succint fiecare functie din node.py :
+*
+* <set_barrier> :
+* folosita pentru setarea unei bariere intr-un nod
+*
+* <gather>:
+* -pun intr-un buffer datele adunate conform in_slices
+* -pun in coada task.run
+* -pun intr-o lista out_slices corespunzatoare taskului curent
+*
+* <schedule_task>:
+* -am folosit nodul cu id-ul 0 ca master -- are rolul de a 
+*  crea si partaja intre toate nodurile din cluster o bariera
+* -creez thread cu taskul curent si fie il pornesc si il pun
+*  in lista de threaduri active , fie doar il pun in lista de
+*  threaduri ce asteapta sa fie pornite atunci cand se vor termina
+*  cele active
+*
+* <sync_results>:
+* -verific daca mai am threaduri de rulat
+* -astept sa se termine cele active si pornesc(daca este cazul)
+*  restul de threaduri
+* -dupa ce toate threadurile s-au terminat astept ca toate nodurile
+*  sa termine "gather" -- folosind bariera partajata intre ele
+* -culeg toate rezultatele taskurilor
+* -pornesc operatia de scatter , folosind un lock in momentul scrierii
+*  in campul de date al nodului aferent 
+* -astept ca toate nodurile sa termine scatter -- folosind aceiasi
+*  bariera partajata
+* -fac re-initializarile corespunzatoare pentru runda urmatoare
+*
+===========================================================
+|2. Probleme aparute:
+| \____________________________________________________________________/|
+| 
+| Prima problema a aparut la prima rulare a checkerului, afisand
+| diferentele intre test si outputul meu , in conditiile in care
+| codul meu nu putea fi rulat in totalitate, avand erori de sintaxa.
+|
+| Alte probleme au tinut de sincronizare (gasirea unei metode pentru a
+| partaja o bariera intre noduri , punerea unui lock pentru zona critica
+| la scrierea in campul de date al unui nod )
+| 
+| /____________________________________________________________________\|
+   
+===========================================================
+*3. Testare
+*
+* Pentru testare am folosit urmatoarele masini:
+*
+* <Masina virtuala de Linux pusa la dispozitie pentru SO>
+* <Masina virtuala cu Linux Mint 17.1 Rebecca >
+* <Masina virtuala de Windows pusa la dispozitie pentru SO>
+* <Windows 8.1>
+* <fep>
+*  
+* Rezultate : 10/10
+*
+*
+===========================================================
+<<END>>
+===========================================================
